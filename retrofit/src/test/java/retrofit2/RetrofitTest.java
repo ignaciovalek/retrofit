@@ -329,7 +329,7 @@ public final class RetrofitTest {
   }
 
   @Test public void methodAnnotationsPassedToCallAdapter() {
-    final AtomicReference<Annotation[]> annotationsRef = new AtomicReference<>();
+    final AtomicReference<Annotation[]> annotationsRef = new AtomicReference<Annotation[]>();
     class MyCallAdapterFactory extends CallAdapter.Factory {
       @Override public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations,
           Retrofit retrofit) {
@@ -369,7 +369,7 @@ public final class RetrofitTest {
   }
 
   @Test public void methodAnnotationsPassedToResponseBodyConverter() {
-    final AtomicReference<Annotation[]> annotationsRef = new AtomicReference<>();
+    final AtomicReference<Annotation[]> annotationsRef = new AtomicReference<Annotation[]>();
     class MyConverterFactory extends Converter.Factory {
       @Override
       public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
@@ -390,8 +390,8 @@ public final class RetrofitTest {
   }
 
   @Test public void methodAndParameterAnnotationsPassedToRequestBodyConverter() {
-    final AtomicReference<Annotation[]> parameterAnnotationsRef = new AtomicReference<>();
-    final AtomicReference<Annotation[]> methodAnnotationsRef = new AtomicReference<>();
+    final AtomicReference<Annotation[]> parameterAnnotationsRef = new AtomicReference<Annotation[]>();
+    final AtomicReference<Annotation[]> methodAnnotationsRef = new AtomicReference<Annotation[]>();
 
     class MyConverterFactory extends Converter.Factory {
       @Override
@@ -415,7 +415,7 @@ public final class RetrofitTest {
   }
 
   @Test public void parameterAnnotationsPassedToStringConverter() {
-    final AtomicReference<Annotation[]> annotationsRef = new AtomicReference<>();
+    final AtomicReference<Annotation[]> annotationsRef = new AtomicReference<Annotation[]>();
     class MyConverterFactory extends Converter.Factory {
       @Override public Converter<?, String> stringConverter(Type type, Annotation[] annotations,
           Retrofit retrofit) {

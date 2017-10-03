@@ -42,7 +42,7 @@ final class ExecutorCallAdapterFactory extends CallAdapter.Factory {
       }
 
       @Override public Call<Object> adapt(Call<Object> call) {
-        return new ExecutorCallbackCall<>(callbackExecutor, call);
+        return new ExecutorCallbackCall<Object>(callbackExecutor, call);
       }
     };
   }
@@ -101,7 +101,7 @@ final class ExecutorCallAdapterFactory extends CallAdapter.Factory {
 
     @SuppressWarnings("CloneDoesntCallSuperClone") // Performing deep clone.
     @Override public Call<T> clone() {
-      return new ExecutorCallbackCall<>(callbackExecutor, delegate.clone());
+      return new ExecutorCallbackCall<T>(callbackExecutor, delegate.clone());
     }
 
     @Override public Request request() {

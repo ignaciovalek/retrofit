@@ -48,7 +48,7 @@ final class OkHttpCall<T> implements Call<T> {
 
   @SuppressWarnings("CloneDoesntCallSuperClone") // We are a final type & this saves clearing state.
   @Override public OkHttpCall<T> clone() {
-    return new OkHttpCall<>(serviceMethod, args);
+    return new OkHttpCall<T>(serviceMethod, args);
   }
 
   @Override public synchronized Request request() {
@@ -162,7 +162,10 @@ final class OkHttpCall<T> implements Call<T> {
       if (call == null) {
         try {
           call = rawCall = createRawCall();
-        } catch (IOException | RuntimeException e) {
+        } catch (IOException e) {
+          creationFailure = e;
+          throw e;
+        } catch (RuntimeException e) {
           creationFailure = e;
           throw e;
         }

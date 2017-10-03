@@ -30,6 +30,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Converter.Factory;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Header;
@@ -58,7 +59,7 @@ import static retrofit2.Utils.checkNotNull;
  * @author Jake Wharton (jw@squareup.com)
  */
 public final class Retrofit {
-  private final Map<Method, ServiceMethod<?, ?>> serviceMethodCache = new ConcurrentHashMap<>();
+  private final Map<Method, ServiceMethod<?, ?>> serviceMethodCache = new ConcurrentHashMap<Method, ServiceMethod<?, ?>>();
 
   final okhttp3.Call.Factory callFactory;
   final HttpUrl baseUrl;
@@ -145,7 +146,7 @@ public final class Retrofit {
             }
             ServiceMethod<Object, Object> serviceMethod =
                 (ServiceMethod<Object, Object>) loadServiceMethod(method);
-            OkHttpCall<Object> okHttpCall = new OkHttpCall<>(serviceMethod, args);
+            OkHttpCall<Object> okHttpCall = new OkHttpCall<Object>(serviceMethod, args);
             return serviceMethod.callAdapter.adapt(okHttpCall);
           }
         });
@@ -167,7 +168,7 @@ public final class Retrofit {
     synchronized (serviceMethodCache) {
       result = serviceMethodCache.get(method);
       if (result == null) {
-        result = new ServiceMethod.Builder<>(this, method).build();
+        result = new ServiceMethod.Builder<Object, Object>(this, method).build();
         serviceMethodCache.put(method, result);
       }
     }
@@ -395,8 +396,8 @@ public final class Retrofit {
     private final Platform platform;
     private @Nullable okhttp3.Call.Factory callFactory;
     private HttpUrl baseUrl;
-    private final List<Converter.Factory> converterFactories = new ArrayList<>();
-    private final List<CallAdapter.Factory> adapterFactories = new ArrayList<>();
+    private final List<Converter.Factory> converterFactories = new ArrayList<Factory>();
+    private final List<CallAdapter.Factory> adapterFactories = new ArrayList<retrofit2.CallAdapter.Factory>();
     private @Nullable Executor callbackExecutor;
     private boolean validateEagerly;
 
@@ -583,12 +584,12 @@ public final class Retrofit {
       }
 
       // Make a defensive copy of the adapters and add the default Call adapter.
-      List<CallAdapter.Factory> adapterFactories = new ArrayList<>(this.adapterFactories);
+      List<CallAdapter.Factory> adapterFactories = new ArrayList<retrofit2.CallAdapter.Factory>(this.adapterFactories);
       adapterFactories.add(platform.defaultCallAdapterFactory(callbackExecutor));
 
       // Make a defensive copy of the converters.
       List<Converter.Factory> converterFactories =
-          new ArrayList<>(1 + this.converterFactories.size());
+          new ArrayList<Factory>(1 + this.converterFactories.size());
 
       // Add the built-in converter factory first. This prevents overriding its behavior but also
       // ensures correct behavior when using converters that consume all types.

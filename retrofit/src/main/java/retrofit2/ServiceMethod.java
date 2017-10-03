@@ -217,7 +217,7 @@ final class ServiceMethod<R, T> {
         throw methodError("Multipart method must contain at least one @Part.");
       }
 
-      return new ServiceMethod<>(this);
+      return new ServiceMethod<T, R>(this);
     }
 
     private CallAdapter<T, R> createCallAdapter() {
@@ -399,7 +399,7 @@ final class ServiceMethod<R, T> {
         validatePathName(p, name);
 
         Converter<?, String> converter = retrofit.stringConverter(type, annotations);
-        return new ParameterHandler.Path<>(name, converter, path.encoded());
+        return new ParameterHandler.Path(name, converter, path.encoded());
 
       } else if (annotation instanceof Query) {
         Query query = (Query) annotation;
@@ -419,16 +419,16 @@ final class ServiceMethod<R, T> {
           Type iterableType = Utils.getParameterUpperBound(0, parameterizedType);
           Converter<?, String> converter =
               retrofit.stringConverter(iterableType, annotations);
-          return new ParameterHandler.Query<>(name, converter, encoded).iterable();
+          return new ParameterHandler.Query(name, converter, encoded).iterable();
         } else if (rawParameterType.isArray()) {
           Class<?> arrayComponentType = boxIfPrimitive(rawParameterType.getComponentType());
           Converter<?, String> converter =
               retrofit.stringConverter(arrayComponentType, annotations);
-          return new ParameterHandler.Query<>(name, converter, encoded).array();
+          return new ParameterHandler.Query(name, converter, encoded).array();
         } else {
           Converter<?, String> converter =
               retrofit.stringConverter(type, annotations);
-          return new ParameterHandler.Query<>(name, converter, encoded);
+          return new ParameterHandler.Query(name, converter, encoded);
         }
 
       } else if (annotation instanceof QueryName) {
@@ -448,16 +448,16 @@ final class ServiceMethod<R, T> {
           Type iterableType = Utils.getParameterUpperBound(0, parameterizedType);
           Converter<?, String> converter =
               retrofit.stringConverter(iterableType, annotations);
-          return new ParameterHandler.QueryName<>(converter, encoded).iterable();
+          return new ParameterHandler.QueryName(converter, encoded).iterable();
         } else if (rawParameterType.isArray()) {
           Class<?> arrayComponentType = boxIfPrimitive(rawParameterType.getComponentType());
           Converter<?, String> converter =
               retrofit.stringConverter(arrayComponentType, annotations);
-          return new ParameterHandler.QueryName<>(converter, encoded).array();
+          return new ParameterHandler.QueryName(converter, encoded).array();
         } else {
           Converter<?, String> converter =
               retrofit.stringConverter(type, annotations);
-          return new ParameterHandler.QueryName<>(converter, encoded);
+          return new ParameterHandler.QueryName(converter, encoded);
         }
 
       } else if (annotation instanceof QueryMap) {
@@ -478,7 +478,7 @@ final class ServiceMethod<R, T> {
         Converter<?, String> valueConverter =
             retrofit.stringConverter(valueType, annotations);
 
-        return new ParameterHandler.QueryMap<>(valueConverter, ((QueryMap) annotation).encoded());
+        return new ParameterHandler.QueryMap(valueConverter, ((QueryMap) annotation).encoded());
 
       } else if (annotation instanceof Header) {
         Header header = (Header) annotation;
@@ -496,16 +496,16 @@ final class ServiceMethod<R, T> {
           Type iterableType = Utils.getParameterUpperBound(0, parameterizedType);
           Converter<?, String> converter =
               retrofit.stringConverter(iterableType, annotations);
-          return new ParameterHandler.Header<>(name, converter).iterable();
+          return new ParameterHandler.Header(name, converter).iterable();
         } else if (rawParameterType.isArray()) {
           Class<?> arrayComponentType = boxIfPrimitive(rawParameterType.getComponentType());
           Converter<?, String> converter =
               retrofit.stringConverter(arrayComponentType, annotations);
-          return new ParameterHandler.Header<>(name, converter).array();
+          return new ParameterHandler.Header(name, converter).array();
         } else {
           Converter<?, String> converter =
               retrofit.stringConverter(type, annotations);
-          return new ParameterHandler.Header<>(name, converter);
+          return new ParameterHandler.Header(name, converter);
         }
 
       } else if (annotation instanceof HeaderMap) {
@@ -526,7 +526,7 @@ final class ServiceMethod<R, T> {
         Converter<?, String> valueConverter =
             retrofit.stringConverter(valueType, annotations);
 
-        return new ParameterHandler.HeaderMap<>(valueConverter);
+        return new ParameterHandler.HeaderMap(valueConverter);
 
       } else if (annotation instanceof Field) {
         if (!isFormEncoded) {
@@ -550,16 +550,16 @@ final class ServiceMethod<R, T> {
           Type iterableType = Utils.getParameterUpperBound(0, parameterizedType);
           Converter<?, String> converter =
               retrofit.stringConverter(iterableType, annotations);
-          return new ParameterHandler.Field<>(name, converter, encoded).iterable();
+          return new ParameterHandler.Field(name, converter, encoded).iterable();
         } else if (rawParameterType.isArray()) {
           Class<?> arrayComponentType = boxIfPrimitive(rawParameterType.getComponentType());
           Converter<?, String> converter =
               retrofit.stringConverter(arrayComponentType, annotations);
-          return new ParameterHandler.Field<>(name, converter, encoded).array();
+          return new ParameterHandler.Field(name, converter, encoded).array();
         } else {
           Converter<?, String> converter =
               retrofit.stringConverter(type, annotations);
-          return new ParameterHandler.Field<>(name, converter, encoded);
+          return new ParameterHandler.Field(name, converter, encoded);
         }
 
       } else if (annotation instanceof FieldMap) {
@@ -585,7 +585,7 @@ final class ServiceMethod<R, T> {
             retrofit.stringConverter(valueType, annotations);
 
         gotField = true;
-        return new ParameterHandler.FieldMap<>(valueConverter, ((FieldMap) annotation).encoded());
+        return new ParameterHandler.FieldMap(valueConverter, ((FieldMap) annotation).encoded());
 
       } else if (annotation instanceof Part) {
         if (!isMultipart) {
@@ -644,7 +644,7 @@ final class ServiceMethod<R, T> {
             }
             Converter<?, RequestBody> converter =
                 retrofit.requestBodyConverter(iterableType, annotations, methodAnnotations);
-            return new ParameterHandler.Part<>(headers, converter).iterable();
+            return new ParameterHandler.Part(headers, converter).iterable();
           } else if (rawParameterType.isArray()) {
             Class<?> arrayComponentType = boxIfPrimitive(rawParameterType.getComponentType());
             if (MultipartBody.Part.class.isAssignableFrom(arrayComponentType)) {
@@ -653,14 +653,14 @@ final class ServiceMethod<R, T> {
             }
             Converter<?, RequestBody> converter =
                 retrofit.requestBodyConverter(arrayComponentType, annotations, methodAnnotations);
-            return new ParameterHandler.Part<>(headers, converter).array();
+            return new ParameterHandler.Part(headers, converter).array();
           } else if (MultipartBody.Part.class.isAssignableFrom(rawParameterType)) {
             throw parameterError(p, "@Part parameters using the MultipartBody.Part must not "
                 + "include a part name in the annotation.");
           } else {
             Converter<?, RequestBody> converter =
                 retrofit.requestBodyConverter(type, annotations, methodAnnotations);
-            return new ParameterHandler.Part<>(headers, converter);
+            return new ParameterHandler.Part(headers, converter);
           }
         }
 
@@ -694,7 +694,7 @@ final class ServiceMethod<R, T> {
             retrofit.requestBodyConverter(valueType, annotations, methodAnnotations);
 
         PartMap partMap = (PartMap) annotation;
-        return new ParameterHandler.PartMap<>(valueConverter, partMap.encoding());
+        return new ParameterHandler.PartMap(valueConverter, partMap.encoding());
 
       } else if (annotation instanceof Body) {
         if (isFormEncoded || isMultipart) {
@@ -713,7 +713,7 @@ final class ServiceMethod<R, T> {
           throw parameterError(e, p, "Unable to create @Body converter for %s", type);
         }
         gotBody = true;
-        return new ParameterHandler.Body<>(converter);
+        return new ParameterHandler.Body(converter);
       }
 
       return null; // Not a Retrofit annotation.
@@ -768,7 +768,7 @@ final class ServiceMethod<R, T> {
    */
   static Set<String> parsePathParameters(String path) {
     Matcher m = PARAM_URL_REGEX.matcher(path);
-    Set<String> patterns = new LinkedHashSet<>();
+    Set<String> patterns = new LinkedHashSet<String>();
     while (m.find()) {
       patterns.add(m.group(1));
     }

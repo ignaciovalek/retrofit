@@ -15,14 +15,16 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>gson</module>
-    <module>guava</module>
-    <module>protobuf</module>
     <module>jackson</module>
+<!--
+    <module>guava</module>
+    <module>gson</module>
+    <module>protobuf</module>
     <module>java8</module>
     <module>wire</module>
     <module>simplexml</module>
     <module>scalars</module>
     <module>moshi</module>
+-->
   </modules>
 </project>

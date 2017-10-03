@@ -503,7 +503,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, String> queryParams = new LinkedHashMap<>();
+    Map<String, String> queryParams = new LinkedHashMap<String, String>();
     queryParams.put("ping", "pong");
     queryParams.put(null, "kat");
 
@@ -523,7 +523,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, String> queryParams = new LinkedHashMap<>();
+    Map<String, String> queryParams = new LinkedHashMap<String, String>();
     queryParams.put("ping", "pong");
     queryParams.put("kit", null);
 
@@ -543,7 +543,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, Object> headers = new LinkedHashMap<>();
+    Map<String, Object> headers = new LinkedHashMap<String, Object>();
     headers.put("Accept", "text/plain");
     headers.put("Accept-Charset", "utf-8");
 
@@ -616,7 +616,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, String> headers = new LinkedHashMap<>();
+    Map<String, String> headers = new LinkedHashMap<String, String>();
     headers.put("Accept", "text/plain");
     headers.put(null, "utf-8");
 
@@ -636,7 +636,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, String> headers = new LinkedHashMap<>();
+    Map<String, String> headers = new LinkedHashMap<String, String>();
     headers.put("Accept", "text/plain");
     headers.put("Accept-Charset", null);
 
@@ -1196,7 +1196,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, Object> params = new LinkedHashMap<>();
+    Map<String, Object> params = new LinkedHashMap<String, Object>();
     params.put("kit", "kat");
     params.put("ping", "pong");
 
@@ -1215,7 +1215,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, Object> params = new LinkedHashMap<>();
+    Map<String, Object> params = new LinkedHashMap<String, Object>();
     params.put("kit", "k%20t");
     params.put("pi%20ng", "p%20g");
 
@@ -1921,7 +1921,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, RequestBody> params = new LinkedHashMap<>();
+    Map<String, RequestBody> params = new LinkedHashMap<String, RequestBody>();
     params.put("ping", RequestBody.create(null, "pong"));
     params.put("kit", RequestBody.create(null, "kat"));
 
@@ -1955,7 +1955,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, RequestBody> params = new LinkedHashMap<>();
+    Map<String, RequestBody> params = new LinkedHashMap<String, RequestBody>();
     params.put("ping", RequestBody.create(null, "pong"));
     params.put("kit", RequestBody.create(null, "kat"));
 
@@ -2046,7 +2046,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, RequestBody> params = new LinkedHashMap<>();
+    Map<String, RequestBody> params = new LinkedHashMap<String, RequestBody>();
     params.put("ping", RequestBody.create(null, "pong"));
     params.put(null, RequestBody.create(null, "kat"));
 
@@ -2067,7 +2067,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, RequestBody> params = new LinkedHashMap<>();
+    Map<String, RequestBody> params = new LinkedHashMap<String, RequestBody>();
     params.put("ping", RequestBody.create(null, "pong"));
     params.put("kit", null);
 
@@ -2248,7 +2248,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, Object> fieldMap = new LinkedHashMap<>();
+    Map<String, Object> fieldMap = new LinkedHashMap<String, Object>();
     fieldMap.put("k%20it", "k%20at");
     fieldMap.put("pin%20g", "po%20ng");
 
@@ -2265,7 +2265,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, Object> fieldMap = new LinkedHashMap<>();
+    Map<String, Object> fieldMap = new LinkedHashMap<String, Object>();
     fieldMap.put("kit", "kat");
     fieldMap.put("ping", "pong");
 
@@ -2299,7 +2299,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, Object> fieldMap = new LinkedHashMap<>();
+    Map<String, Object> fieldMap = new LinkedHashMap<String, Object>();
     fieldMap.put("kit", "kat");
     fieldMap.put(null, "pong");
 
@@ -2320,7 +2320,7 @@ public final class RequestBuilderTest {
       }
     }
 
-    Map<String, Object> fieldMap = new LinkedHashMap<>();
+    Map<String, Object> fieldMap = new LinkedHashMap<String, Object>();
     fieldMap.put("kit", "kat");
     fieldMap.put("foo", null);
 
@@ -2669,7 +2669,7 @@ public final class RequestBuilderTest {
   }
 
   static <T> Request buildRequest(Class<T> cls, Retrofit.Builder builder, Object... args) {
-    final AtomicReference<Request> requestRef = new AtomicReference<>();
+    final AtomicReference<Request> requestRef = new AtomicReference<Request>();
     okhttp3.Call.Factory callFactory = new okhttp3.Call.Factory() {
       @Override public okhttp3.Call newCall(Request request) {
         requestRef.set(request);
@@ -2683,7 +2683,7 @@ public final class RequestBuilderTest {
     //noinspection unchecked
     ServiceMethod<T, Call<T>> serviceMethod =
         (ServiceMethod<T, Call<T>>) retrofit.loadServiceMethod(method);
-    Call<T> okHttpCall = new OkHttpCall<>(serviceMethod, args);
+    Call<T> okHttpCall = new OkHttpCall<T>(serviceMethod, args);
     Call<T> call = serviceMethod.callAdapter.adapt(okHttpCall);
     try {
       call.execute();

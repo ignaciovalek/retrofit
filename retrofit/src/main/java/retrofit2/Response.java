@@ -59,7 +59,7 @@ public final class Response<T> {
     if (!rawResponse.isSuccessful()) {
       throw new IllegalArgumentException("rawResponse must be successful response");
     }
-    return new Response<>(rawResponse, body, null);
+    return new Response<T>(rawResponse, body, null);
   }
 
   /**
@@ -83,7 +83,7 @@ public final class Response<T> {
     if (rawResponse.isSuccessful()) {
       throw new IllegalArgumentException("rawResponse should not be successful response");
     }
-    return new Response<>(rawResponse, null, body);
+    return new Response<T>(rawResponse, null, body);
   }
 
   private final okhttp3.Response rawResponse;

@@ -83,7 +83,7 @@ public final class CallTest {
 
     server.enqueue(new MockResponse().setBody("Hi"));
 
-    final AtomicReference<Response<String>> responseRef = new AtomicReference<>();
+    final AtomicReference<Response<String>> responseRef = new AtomicReference<Response<String>>();
     final CountDownLatch latch = new CountDownLatch(1);
     example.getString().enqueue(new Callback<String>() {
       @Override public void onResponse(Call<String> call, Response<String> response) {
@@ -126,7 +126,7 @@ public final class CallTest {
 
     server.enqueue(new MockResponse().setResponseCode(404).setBody("Hi"));
 
-    final AtomicReference<Response<String>> responseRef = new AtomicReference<>();
+    final AtomicReference<Response<String>> responseRef = new AtomicReference<Response<String>>();
     final CountDownLatch latch = new CountDownLatch(1);
     example.getString().enqueue(new Callback<String>() {
       @Override public void onResponse(Call<String> call, Response<String> response) {
@@ -172,7 +172,7 @@ public final class CallTest {
 
     server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START));
 
-    final AtomicReference<Throwable> failureRef = new AtomicReference<>();
+    final AtomicReference<Throwable> failureRef = new AtomicReference<Throwable>();
     final CountDownLatch latch = new CountDownLatch(1);
     example.getString().enqueue(new Callback<String>() {
       @Override public void onResponse(Call<String> call, Response<String> response) {
@@ -235,7 +235,7 @@ public final class CallTest {
         .build();
     Service example = retrofit.create(Service.class);
 
-    final AtomicReference<Throwable> failureRef = new AtomicReference<>();
+    final AtomicReference<Throwable> failureRef = new AtomicReference<Throwable>();
     final CountDownLatch latch = new CountDownLatch(1);
     example.postString("Hi").enqueue(new Callback<String>() {
       @Override public void onResponse(Call<String> call, Response<String> response) {
@@ -350,7 +350,7 @@ public final class CallTest {
 
     server.enqueue(new MockResponse().setBody("Hi"));
 
-    final AtomicReference<Throwable> failureRef = new AtomicReference<>();
+    final AtomicReference<Throwable> failureRef = new AtomicReference<Throwable>();
     final CountDownLatch latch = new CountDownLatch(1);
     example.postString("Hi").enqueue(new Callback<String>() {
       @Override public void onResponse(Call<String> call, Response<String> response) {
@@ -610,7 +610,7 @@ public final class CallTest {
     call.cancel();
     assertThat(call.isCanceled()).isTrue();
 
-    final AtomicReference<Throwable> failureRef = new AtomicReference<>();
+    final AtomicReference<Throwable> failureRef = new AtomicReference<Throwable>();
     final CountDownLatch latch = new CountDownLatch(1);
     call.enqueue(new Callback<String>() {
       @Override public void onResponse(Call<String> call, Response<String> response) {
@@ -654,7 +654,7 @@ public final class CallTest {
 
     Call<String> call = service.getString();
 
-    final AtomicReference<Throwable> failureRef = new AtomicReference<>();
+    final AtomicReference<Throwable> failureRef = new AtomicReference<Throwable>();
     final CountDownLatch latch = new CountDownLatch(1);
     call.enqueue(new Callback<String>() {
       @Override public void onResponse(Call<String> call, Response<String> response) {
@@ -687,7 +687,7 @@ public final class CallTest {
 
     Call<String> call = service.getString();
 
-    final AtomicReference<Throwable> failureRef = new AtomicReference<>();
+    final AtomicReference<Throwable> failureRef = new AtomicReference<Throwable>();
     final CountDownLatch latch = new CountDownLatch(1);
     call.enqueue(new Callback<String>() {
       @Override public void onResponse(Call<String> call, Response<String> response) {
